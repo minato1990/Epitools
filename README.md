@@ -3,7 +3,7 @@ This is a R package includes functions to calculate some useful parameters in Ep
 
 =======
 By 
-Qin Li, 
+Qin Li, MMed, PhD, 
 Peking University
 July 12, 2018.
 
