@@ -9,11 +9,11 @@ inter.coeff(mod, gp)
 \arguments{
 \item{mod}{a model include interaction fiited by coxme}
 
-\item{gp}{a numeric indicate the level of interacted factor}
+\item{factor}{a string indicate the estimated interacted factor}
 }
 \description{
 This function allows you to caculate coefficient and confidence interval of each stratum of interaction term.
 }
 \examples{
-inter.coeff(model1,2)
+inter.coeff(model,"pm25")
 }
