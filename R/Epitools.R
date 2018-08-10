@@ -2,54 +2,67 @@
 #'
 #' This function allows you to caculate coefficient and confidence interval of each stratum of interaction term.
 #' @param mod a model include interaction fiited by coxme
-#' @param gp a numeric indicate the level of interacted factor
+#' @param factor a string indicate the estmated interacted factor
 #' @examples
 #' inter.coeff(model1,2)
 
-inter.coeff <- function (mod,gp){
-  require(coxme)
+inter.coeff <- function (mod,factor){
   g <- vector()
   coff <- vector()
   se <- vector()
   p <- vector()
 
-
-  for (i in 1:gp) {
-    g[i] <- names(mod$coefficients)[length(mod$coefficients)-gp+i]
-  }
-
-
+if ("coxme" %in% class(mod)) { 
+  require(coxme)
+  g <- names(mod$coefficients)[grep(factor, names(mod$coefficients))]
   beta <- mod$coefficients
-  rmain <- as.numeric(which(beta==mod$coefficients[g[1]]))
-  cmain <- as.numeric(which(beta==mod$coefficients[g[1]]))
-  coff[1] <- beta[g[1]]
+  rmain <- g[1]
+  cmain <- g[1]
+  coff[1] <- beta[rmain]
   se[1] <- sqrt(vcov(mod)[rmain,cmain])
   p[1] <- NA
-
-
-  for (i in 2:gp) {
-    rinter <- as.numeric(which(beta==mod$coefficients[g[i]]))
-    cinter <- as.numeric(which(beta==mod$coefficients[g[i]]))
+  
+  for (i in 2:length(g)) {
+    rinter <- grep(factor, names(mod$coefficients))[i]
+    cinter <- grep(factor, names(mod$coefficients))[i]
     coff[i] <- beta[rinter]+beta[rmain]
     se[i] <- sqrt(vcov(mod)[rmain,cmain]+vcov(mod)[rinter,cinter]+2*vcov(mod)[rmain,cinter])
     p[i] <- signif(1 - pchisq((beta[rinter]/sqrt(vcov(mod)[rinter,cinter]))^2, 1), 2)
   }
-
-
-  table <- as.data.frame(cbind(g,coff,se,p))
-  names(table)[1] <- "group"
-  for (i in 2:4) {
-    table[,i] <- as.character(table[,i])
-    table[,i] <- as.numeric(table[,i])
+} 
+else if ("gam" %in% class(mod)) {
+  require(mgcv)
+  g <- names(mod$coefficients)[grep(factor, names(mod$coefficients))]
+  beta <- mod$coefficients
+  rmain <- g[1]
+  cmain <- g[1]
+  coff[1] <- beta[rmain]
+  se[1] <- sqrt(vcov(mod)[rmain,cmain])
+  p[1] <- NA
+  
+  for (i in 2:length(g)) {
+    rinter <- grep(factor, names(mod$coefficients))[i]
+    cinter <- grep(factor, names(mod$coefficients))[i]
+    coff[i] <- beta[rinter]+beta[rmain]
+    se[i] <- sqrt(vcov(mod)[rmain,cmain]+vcov(mod)[rinter,cinter]+2*vcov(mod)[rmain,cinter])
+    p[i] <- signif(1 - pchisq((beta[rinter]/sqrt(vcov(mod)[rinter,cinter]))^2, 1), 2)
   }
-  or <- exp(table$coff*10)
-  low <- exp(table$coff*10-1.96*table$se*10)
-  up <- exp(table$coff*10+1.96*table$se*10)
-  table$or <- paste(round(or,digits = 2)," (",round(low,digits = 2),", ",round(up,digits = 2),")",sep="")
-  return(table)
+} else {print("model type is unsupported")}
+  
+  
+table <- as.data.frame(cbind(g,coff,se,p))
+names(table)[1] <- "group"
+for (i in 2:4) {
+  table[,i] <- as.character(table[,i])
+  table[,i] <- as.numeric(table[,i])
 }
 
-
+or <- exp(table$coff*10)
+low <- exp(table$coff*10-1.96*table$se*10)
+up <- exp(table$coff*10+1.96*table$se*10)
+table$or <- paste(round(or,digits = 2)," (",round(low,digits = 2),", ",round(up,digits = 2),")",sep="")
+return(table)
+}
 
 
 #' inter.reri
