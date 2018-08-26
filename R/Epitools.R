@@ -16,8 +16,8 @@ if ("coxme" %in% class(mod)) {
   require(coxme)
   g <- names(mod$coefficients)[grep(factor, names(mod$coefficients))]
   beta <- mod$coefficients
-  rmain <- g[1]
-  cmain <- g[1]
+  rmain <- which(names(beta)==g[1])
+  cmain <- which(names(beta)==g[1])
   coff[1] <- beta[rmain]
   se[1] <- sqrt(vcov(mod)[rmain,cmain])
   p[1] <- NA
@@ -34,8 +34,8 @@ else if ("gam" %in% class(mod)) {
   require(mgcv)
   g <- names(mod$coefficients)[grep(factor, names(mod$coefficients))]
   beta <- mod$coefficients
-  rmain <- g[1]
-  cmain <- g[1]
+  rmain <- which(names(beta)==g[1])
+  cmain <- which(names(beta)==g[1])
   coff[1] <- beta[rmain]
   se[1] <- sqrt(vcov(mod)[rmain,cmain])
   p[1] <- NA
