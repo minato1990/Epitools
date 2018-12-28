@@ -147,3 +147,20 @@ inter.reri <- function (model, coeff, type = c("RERI", "APAB", "S"), conf.level 
   }
   return(rval)
 }
+
+
+#' set_utf8
+#'
+#' This function allows you to reset the encoding of all columns of a dataframe into UTF-8.
+#' @param dafaframe dataframe want to be transfered
+#' @param encoding “UTF-8”，“GB2312” and so on
+#' @examples
+#' inter.reri(model1,c(2,3,4),"RERI",0.95)
+set_encoding <- function(dafaframe,encoding) {
+  # Declare UTF-8 encoding on all character columns:
+  chr <- sapply(dafaframe, is.character)
+  dafaframe[, chr] <- lapply(dafaframe[, chr, drop = FALSE], `Encoding<-`, encoding)
+  # Same on column names:
+  Encoding(names(dafaframe)) <- encoding
+  dafaframe
+}
