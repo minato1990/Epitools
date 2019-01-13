@@ -164,3 +164,22 @@ set_encoding <- function(dafaframe,encoding) {
   Encoding(names(dafaframe)) <- encoding
   dafaframe
 }
+
+
+
+
+#' getOR
+#'
+#' This function allows you to caculate OR with confidence interval of input beta and se.
+#' @param coef inputted beta
+#' @param se inputted se
+#' @param zoom inputted zoom
+#' @examples
+#' getOR(0.1,0.001,10)
+getOR <- function(coef,se,zoom) 
+  {
+  a <- round(exp(coef*zoom),digits = 2)
+  b <- round(exp(coef*zoom-1.96*se*zoom),digits = 2)
+  c <- round(exp(coef*zoom+1.96*se*zoom),digits = 2)
+  print(paste(a," (",b,", ",c,")",sep = ""))
+}
