@@ -27,7 +27,7 @@ if ("coxme" %in% class(mod)) {
     cinter <- grep(factor, names(mod$coefficients))[i]
     coff[i] <- beta[rinter]+beta[rmain]
     se[i] <- sqrt(vcov(mod)[rmain,cmain]+vcov(mod)[rinter,cinter]+2*vcov(mod)[rmain,cinter])
-    p[i] <- signif(1 - pchisq((beta[rinter]/sqrt(vcov(mod)[rinter,cinter]))^2, 1), 2)
+    p[i] <- signif(1 - pchisq((beta[rinter]/sqrt(vcov(mod)[rinter,cinter]))^2, 1), 3)
   }
 } 
 else if ("gam" %in% class(mod)) {
@@ -45,7 +45,7 @@ else if ("gam" %in% class(mod)) {
     cinter <- grep(factor, names(mod$coefficients))[i]
     coff[i] <- beta[rinter]+beta[rmain]
     se[i] <- sqrt(vcov(mod)[rmain,cmain]+vcov(mod)[rinter,cinter]+2*vcov(mod)[rmain,cinter])
-    p[i] <- signif(1 - pchisq((beta[rinter]/sqrt(vcov(mod)[rinter,cinter]))^2, 1), 2)
+    p[i] <- signif(1 - pchisq((beta[rinter]/sqrt(vcov(mod)[rinter,cinter]))^2, 1), 3)
   }
 } else {print("model type is unsupported")}
   
