@@ -192,8 +192,10 @@ getOR <- function(coef,se,zoom)
 #' @param y inputted round digits
 #' @examples
 #' q.mean(x,1)
-q.mean <- function(x,y){
-         mean <- summary(x)[4]
-         sd <- sd(x,na.rm = T)
-         paste(round(mean,digits = y)," (",round(sd,digits = y),") / ",summary(x)[7],sep="")
+q.mean <- function(x,y)
+  {
+   mean <- summary(x)[4]
+   sd <- sd(x,na.rm = T)
+   print(paste(round(mean,digits = y)," (",round(sd,digits = y),") / ",summary(x)[7],sep=""))
+}
          
