@@ -183,3 +183,17 @@ getOR <- function(coef,se,zoom)
   c <- round(exp(coef*zoom+1.96*se*zoom),digits = 2)
   print(paste(a," (",b,", ",c,")",sep = ""))
 }
+
+
+#' q.mean
+#'
+#' This function allows you to caculate mean with sd input beta.
+#' @param x inputted variable
+#' @param y inputted round digits
+#' @examples
+#' q.mean(x,1)
+q.mean <- function(x,y){
+         mean <- summary(x)[4]
+         sd <- sd(x,na.rm = T)
+         paste(round(mean,digits = y)," (",round(sd,digits = y),") / ",summary(x)[7],sep="")
+         
