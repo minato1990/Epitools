@@ -6,7 +6,7 @@
 #' @examples
 #' inter.coeff(model1,2)
 
-inter.coeff <- function (mod,factor){
+inter.coeff <- function (mod,factor,zoom){
   g <- vector()
   coff <- vector()
   se <- vector()
@@ -57,9 +57,9 @@ for (i in 2:4) {
   table[,i] <- as.numeric(table[,i])
 }
 
-or <- exp(table$coff*10)
-low <- exp(table$coff*10-1.96*table$se*10)
-up <- exp(table$coff*10+1.96*table$se*10)
+or <- exp(table$coff*zoom)
+low <- exp(table$coff*zoom-1.96*table$se*zoom)
+up <- exp(table$coff*zoom+1.96*table$se*zoom)
 table$or <- paste(round(or,digits = 2)," (",round(low,digits = 2),", ",round(up,digits = 2),")",sep="")
 return(table)
 }
@@ -149,24 +149,6 @@ inter.reri <- function (model, coeff, type = c("RERI", "APAB", "S"), conf.level 
 }
 
 
-#' set_utf8
-#'
-#' This function allows you to reset the encoding of all columns of a dataframe into UTF-8.
-#' @param dafaframe dataframe want to be transfered
-#' @param encoding “UTF-8”，“GB2312” and so on
-#' @examples
-#' inter.reri(model1,c(2,3,4),"RERI",0.95)
-set_encoding <- function(dafaframe,encoding) {
-  # Declare UTF-8 encoding on all character columns:
-  chr <- sapply(dafaframe, is.character)
-  dafaframe[, chr] <- lapply(dafaframe[, chr, drop = FALSE], `Encoding<-`, encoding)
-  # Same on column names:
-  Encoding(names(dafaframe)) <- encoding
-  dafaframe
-}
-
-
-
 
 #' getOR
 #'
@@ -182,20 +164,4 @@ getOR <- function(coef,se,zoom)
   b <- round(exp(coef*zoom-1.96*se*zoom),digits = 2)
   c <- round(exp(coef*zoom+1.96*se*zoom),digits = 2)
   print(paste(a," (",b,", ",c,")",sep = ""))
-}
-
-
-#' q.mean
-#'
-#' This function allows you to caculate mean with sd input beta.
-#' @param x inputted variable
-#' @param y inputted round digits
-#' @examples
-#' q.mean(x,1)
-q.mean <- function(x,y)
-  {
-   mean <- summary(x)[4]
-   sd <- sd(x,na.rm = T)
-   print(paste(round(mean,digits = y)," (",round(sd,digits = y),") / ",summary(x)[7],sep=""))
-}
-         
+}      
