@@ -4,7 +4,7 @@
 \alias{inter.coeff}
 \title{inter.coeff}
 \usage{
-inter.coeff(mod, gp)
+inter.coeff(mod,factor,zoom)
 }
 \arguments{
 \item{mod}{a model include interaction fiited by coxme}
@@ -15,5 +15,5 @@ inter.coeff(mod, gp)
 This function allows you to caculate coefficient and confidence interval of each stratum of interaction term.
 }
 \examples{
-inter.coeff(model,"pm25")
+inter.coeff(model,"pm25",10)
 }
